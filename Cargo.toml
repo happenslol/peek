@@ -1,0 +1,23 @@
+[package]
+name = "panel"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.98"
+clap = "4.5.37"
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
+
+iced = { git = "https://github.com/pop-os/iced", features = [
+  "tokio",
+  "multi-window",
+  "advanced",
+  "wgpu",
+  "winit",
+  "wayland",
+  "image",
+  "lazy",
+  "svg",
+] }
+wayland-client = "0.31.8"
