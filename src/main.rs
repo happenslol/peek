@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use anyhow::Result;
 use iced::{
   Color, Element, Length, Subscription, Task, Theme,
   daemon::Appearance,
@@ -11,6 +12,7 @@ use iced::{
   window::Id,
 };
 use output::Output;
+use single_instance::SingleInstance;
 use tracing::{info, level_filters::LevelFilter, warn};
 use wayland_client::protocol::wl_output::WlOutput;
 
@@ -18,7 +20,7 @@ mod border;
 mod clock;
 mod output;
 
-fn main() -> iced::Result {
+fn main() -> Result<()> {
   let filter = tracing_subscriber::EnvFilter::try_from_env("PEEK_LOG").unwrap_or_else(|_| {
     tracing_subscriber::EnvFilter::default()
       .add_directive(format!("{}=info", env!("CARGO_PKG_NAME")).parse().unwrap())
@@ -27,11 +29,18 @@ fn main() -> iced::Result {
 
   tracing_subscriber::fmt().with_env_filter(filter).init();
 
+  if !SingleInstance::new("lol.happens.peek")?.is_single() {
+    info!("Peek is already running, shutting down");
+    return Ok(());
+  }
+
   iced::daemon(App::title, App::update, App::view)
     .style(App::style)
     .theme(App::theme)
     .subscription(App::subscription)
-    .run_with(App::new)
+    .run_with(App::new)?;
+
+  Ok(())
 }
 
 #[derive(Debug, Clone, Default)]
