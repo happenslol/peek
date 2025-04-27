@@ -29,7 +29,8 @@ fn main() -> Result<()> {
 
   tracing_subscriber::fmt().with_env_filter(filter).init();
 
-  if !SingleInstance::new("lol.happens.peek")?.is_single() {
+  let instance = SingleInstance::new("lol.happens.peek")?;
+  if !instance.is_single() {
     info!("Peek is already running, shutting down");
     return Ok(());
   }
