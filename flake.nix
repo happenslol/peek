@@ -36,7 +36,7 @@
           src = craneLib.cleanCargoSource ./.;
         };
       in {
-        defaultPackage = craneLib.buildPackage (commonArgs
+        packages.default = craneLib.buildPackage (commonArgs
           // {
             cargoArtifacts = craneLib.buildDepsOnly commonArgs;
             postInstall = ''wrapProgram "$out/bin/peek" --prefix LD_LIBRARY_PATH : "${libraryPath}"'';
