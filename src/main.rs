@@ -23,7 +23,11 @@ mod output;
 fn main() -> Result<()> {
   let filter = tracing_subscriber::EnvFilter::try_from_env("PEEK_LOG").unwrap_or_else(|_| {
     tracing_subscriber::EnvFilter::default()
-      .add_directive(format!("{}=info", env!("CARGO_PKG_NAME")).parse().unwrap())
+      .add_directive(
+        format!("{}=info", env!("CARGO_CRATE_NAME"))
+          .parse()
+          .unwrap(),
+      )
       .add_directive(LevelFilter::WARN.into())
   });
 
@@ -38,6 +42,7 @@ fn main() -> Result<()> {
   iced::daemon(App::title, App::update, App::view)
     .style(App::style)
     .theme(App::theme)
+    .antialiasing(true)
     .subscription(App::subscription)
     .run_with(App::new)?;
 

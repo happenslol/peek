@@ -8,20 +8,18 @@ anyhow = "1.0.98"
 clap = "4.5.37"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
-
-iced = { git = "https://github.com/pop-os/iced", features = [
-  "tokio",
-  "multi-window",
-  "advanced",
-  "wgpu",
-  "winit",
-  "wayland",
-  "image",
-  "lazy",
-  "svg",
-] }
 wayland-client = "0.31.8"
 chrono = "0.4.40"
 futures = "0.3.31"
 tokio = "1.44.2"
 single-instance = "0.3.3"
+
+[dependencies.iced]
+git = "https://github.com/pop-os/iced"
+features = ["tokio", "multi-window", "wgpu", "winit", "wayland", "lazy"]
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+opt-level = "z"
+panic = "abort"
