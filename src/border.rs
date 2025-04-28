@@ -38,7 +38,7 @@ impl Border {
 
     let task = get_layer_surface(SctkLayerSurfaceSettings {
       id,
-      layer: Layer::Overlay,
+      layer: Layer::Top,
       keyboard_interactivity: KeyboardInteractivity::OnDemand,
       pointer_interactivity: true,
       anchor: match position {
@@ -47,7 +47,7 @@ impl Border {
       },
       output: IcedOutput::Output(output.clone()),
       namespace: "panel".to_string(),
-      size: Some((None, Some(10))),
+      size: Some((None, Some(6))),
       ..Default::default()
     });
 

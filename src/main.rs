@@ -13,7 +13,7 @@ use iced::{
 };
 use output::Output;
 use single_instance::SingleInstance;
-use tracing::{info, level_filters::LevelFilter, warn};
+use tracing::{debug, info, level_filters::LevelFilter, warn};
 use wayland_client::protocol::wl_output::WlOutput;
 
 mod border;
@@ -107,7 +107,7 @@ impl App {
       }
       Message::WaylandOutputEvent(event, wl_output) => match event {
         iced::event::wayland::OutputEvent::Created(info) => {
-          info!("Output created: {:?}", info);
+          debug!("Output created: {:?}", info);
 
           if self.outputs.contains_key(&wl_output) {
             return Task::none();
