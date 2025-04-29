@@ -20,11 +20,17 @@ mod border;
 mod clock;
 mod output;
 
+#[cfg(debug_assertions)]
+const DEFAULT_LOG_LEVEL: &str = "debug";
+
+#[cfg(not(debug_assertions))]
+const DEFAULT_LOG_LEVEL: &str = "info";
+
 fn main() -> Result<()> {
   let filter = tracing_subscriber::EnvFilter::try_from_env("PEEK_LOG").unwrap_or_else(|_| {
     tracing_subscriber::EnvFilter::default()
       .add_directive(
-        format!("{}=info", env!("CARGO_CRATE_NAME"))
+        format!("{}={}", env!("CARGO_CRATE_NAME"), DEFAULT_LOG_LEVEL)
           .parse()
           .unwrap(),
       )

@@ -27,9 +27,15 @@
         ];
 
         libraryPath = pkgs.lib.makeLibraryPath (with pkgs; [
+          libxkbcommon
           vulkan-loader
           wayland
         ]);
+
+        packages = with pkgs; [
+          mold
+          clang
+        ];
 
         commonArgs = {
           inherit buildInputs nativeBuildInputs;
@@ -43,7 +49,7 @@
           });
 
         devShells.default = pkgs.mkShell {
-          inherit nativeBuildInputs buildInputs;
+          inherit packages nativeBuildInputs buildInputs;
           LD_LIBRARY_PATH = libraryPath;
         };
       }

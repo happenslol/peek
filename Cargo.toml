@@ -18,6 +18,9 @@ single-instance = "0.3.3"
 git = "https://github.com/pop-os/iced"
 features = ["tokio", "multi-window", "wgpu", "winit", "wayland", "lazy"]
 
+[profile.dev.build-override]
+opt-level = 3
+
 [profile.release]
 codegen-units = 1
 lto = "thin"
