@@ -1,20 +1,32 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    crane.url = "github:ipetkov/crane";
     flake-utils.url = "github:numtide/flake-utils";
+    crane.url = "github:ipetkov/crane";
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     nixpkgs,
     crane,
     flake-utils,
+    fenix,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {inherit system;};
-        craneLib = crane.mkLib pkgs;
+
+        toolchain = fenix.packages.${system}.fromToolchainFile {
+          file = ./rust-toolchain.toml;
+          sha256 = "sha256-LymSUIHsnE+VhVMMlGedMs1NcnzJYcn4zEg5Ob+cJ7k=";
+        };
+
+        craneLib = (crane.mkLib pkgs).overrideToolchain toolchain;
 
         buildInputs = with pkgs; [
           libxkbcommon
