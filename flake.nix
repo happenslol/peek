@@ -31,6 +31,7 @@
         buildInputs = with pkgs; [
           libxkbcommon
           wayland
+          clang
         ];
 
         nativeBuildInputs = with pkgs; [
@@ -44,10 +45,7 @@
           wayland
         ]);
 
-        packages = with pkgs; [
-          mold
-          clang
-        ];
+        packages = with pkgs; [mold];
 
         commonArgs = {
           inherit buildInputs nativeBuildInputs;
